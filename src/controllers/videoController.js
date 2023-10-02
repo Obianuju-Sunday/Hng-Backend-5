@@ -1,102 +1,59 @@
-
-//Multer connection
-
-const multer = require('multer');
+ 
 const Video = require('../model/videoModel');
+require("dotenv").config();
+// const streamifier = require("streamifier");
+const { Deepgram } = require("@deepgram/sdk");
+const multer = require('multer');
+const fs = require('fs');
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null,  'uploads'); // Specify the upload directory
-  },
-  filename: (req, file, cb) => {
-    const uniqueFileName = Date.now() + '-' + file.originalname;
-    cb(null, uniqueFileName);
-  },
-});
+const deepgram = new Deepgram('5c0b23ad241f745d978d13589e6bea8ba7065440');
 
+const storage = multer.memoryStorage(); 
 const upload = multer({ storage });
 
-const cloudinary = require("cloudinary").v2;
-require("dotenv").config();
-const streamifier = require("streamifier");
-
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
-
-// Function to upload a video and save its metadata
-// const uploadVideo = async (req, res) => {
-//   try {
-//     const { title, description } = req.body;
-//     const videoPath = req.file.path;
-    
-//     // Create a new video document
-//     const newVideo = new Video({ title, description, filePath: videoPath });
-
-//     // Save the video info to the database
-//     await newVideo.save();
-
-//     // Redirect the user to a custom page
-//     // res.redirect('/custom-page');
-
-//     res.status(201).json({ message: 'Video uploaded successfully' });
-//   } catch (error) {
-//     console.error('Error uploading video:', error);
-//     res.status(500).json({ error: 'Server error' });
-//   }
-// }
-
-// 
+const videoChunks = [];
 
 const uploadVideo = async (req, res) => {
   try {
-    console.log(req.file);
-    if (!req.file) {
-      console.log("No file uploaded");
-      return res.status(400).json({ msg: "No file uploaded" });
+    const chunk = req.file.buffer;
+    
+    // Append the received chunk to the videoChunks array
+    videoChunks.push(chunk);
+
+    // Check if this is the last chunk (you may need to determine this based on your frontend logic)
+    const isLastChunk = req.body.isLastChunk === 'true';
+
+    if (isLastChunk) {
+      // Combine all video chunks into a single Buffer
+      const fullVideoBuffer = Buffer.concat(videoChunks);
+
+      // Transcribe the video using Deepgram
+      const transcript = await deepgram.transcribe(fullVideoBuffer, {
+        mimetype: "video/mp4", // Adjust the mimetype as needed
+      });
+
+      // Create a new Video document with the full video and transcript
+      const file = new Video({
+        videoData: fullVideoBuffer,
+        transcript: transcript,
+      });
+
+      // Save the video info to the database
+      await file.save();
+
+      // Clear the videoChunks array for the next recording session
+      videoChunks.length = 0;
+
+      res.status(201).json({ file, transcript });
+    } else {
+      // Continue receiving chunks, but don't send a response yet
+      res.status(200).send('Video uploaded successfully');
     }
-
-    const stream = cloudinary.uploader.upload_stream(
-      { resource_type: "video" },
-      async (error, result) => {
-        if (error) {
-          console.error(error);
-          return res.status(500).json({ error });
-        } else {
-          const file = new Video({
-            filename: req.file.originalname,
-            videoUrl: result.secure_url,
-          });
-          await file.save();
-          res.status(201).json({ file });
-        }
-        console.log("result", result);
-      }
-    );
-
-    console.log(stream.secure_url);
-
-    streamifier.createReadStream(req.file.buffer).pipe(stream);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error });
+    res.status(500).json({ error: error});
   }
 };
-
-
-//
-
-const getAllVideos = async (req, res) => {
-  try {
-    const videos = await Video.find();
-    res.status(200).json({ videos });
-  } catch (error) {
-    res.status(500).json({ error });
-  }
-};
-
 
 const getSingleVideo = async (req, res) => {
   try {
@@ -120,7 +77,7 @@ const deleteVideo = async (req, res) => {
 
 module.exports = {
   uploadVideo,
-  getAllVideos,
   getSingleVideo,
-  deleteVideo
+  deleteVideo,
 };
+

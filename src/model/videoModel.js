@@ -11,7 +11,7 @@ const videoSchema = new mongoose.Schema(
         },
         filePath: {
             type: String,
-        }, // Store the file path to locate the video
+        },
     },
     {
         timestamps: true,
