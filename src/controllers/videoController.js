@@ -45,7 +45,7 @@ const uploadVideo = async (req, res) => {
       res.status(201).json({ file, transcript });
     } else {
       // Continue receiving chunks, but don't send a response yet
-      res.status(200).send('Video uploaded successfully');
+      res.status(200).send('Video uploaded successfully', {transcript});
     }
   } catch (error) {
     console.error(error);
