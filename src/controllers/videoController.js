@@ -4,7 +4,7 @@ require("dotenv").config();
 const { Deepgram } = require("@deepgram/sdk");
 const multer = require('multer');
 
-const deepgram = new Deepgram('5c0b23ad241f745d978d13589e6bea8ba7065440');
+const deepgram = new Deepgram('5f596cc5c3b3387697b7d954bb0873f65d6f21bb');
 
 const storage = multer.memoryStorage(); 
 const upload = multer({ storage });
