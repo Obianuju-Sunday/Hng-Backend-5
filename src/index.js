@@ -6,7 +6,6 @@ const mongoose = require('mongoose');
 const mongoData = process.env.DATABASE_URL;
 mongoose.connect(mongoData);
 const database = mongoose.connection;
-const cors = require("cors");
 const routes = require('./routes/videoRoutes.js');
 
 
@@ -19,7 +18,6 @@ database.once('connected', () => {
 })
 
 const app = express();
-app.use(cors())
 app.use(express.json());
  
 app.use(
