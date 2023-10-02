@@ -1,10 +1,8 @@
  
 const Video = require('../model/videoModel');
 require("dotenv").config();
-// const streamifier = require("streamifier");
 const { Deepgram } = require("@deepgram/sdk");
 const multer = require('multer');
-const fs = require('fs');
 
 const deepgram = new Deepgram('5c0b23ad241f745d978d13589e6bea8ba7065440');
 
