@@ -2,7 +2,7 @@ const Video = require('../model/videoModel');
 require("dotenv").config();
 const { Deepgram } = require("@deepgram/sdk");
 const multer = require('multer');
-const { v4: uuidv4 } = require('uuid'); // Import the uuid package
+const { v4: uuidv4 } = require('uuid'); 
 
 const deepgram = new Deepgram('5f596cc5c3b3387697b7d954bb0873f65d6f21bb');
 
@@ -15,42 +15,33 @@ const uploadVideo = async (req, res) => {
   try {
     const chunk = req.file.buffer;
 
-    // Generate a unique UUID for the video
     const videoId = uuidv4();
 
-    // Append the received chunk to the videoChunks array
     videoChunks.push(chunk);
 
-    // Check if this is the last chunk (you may need to determine this based on your frontend logic)
     const isLastChunk = req.body.isLastChunk === 'true';
 
     if (isLastChunk) {
-      // Combine all video chunks into a single Buffer
       const fullVideoBuffer = Buffer.concat(videoChunks);
 
-      // Transcribe the video using Deepgram
       const transcript = await deepgram.transcribe(fullVideoBuffer, {
-        mimetype: "video/mp4", // Adjust the mimetype as needed
+        mimetype: "video/mp4", 
       });
 
-      // Create a new Video document with the full video, UUID, and transcript
       const file = new Video({
-        videoId: videoId, // Assign the generated UUID to the videoId field
+        videoId: videoId, 
         videoData: fullVideoBuffer,
         transcript: transcript,
       });
 
-      // Save the video info to the database
       await file.save();
 
-      // Clear the videoChunks array for the next recording session
       videoChunks.length = 0;
 
       res.status(201).json({ file, transcript });
 
 
     } else {
-      // Continue receiving chunks, but don't send a response yet
       res.status(200).json('Video uploaded successfully');
     }
   } catch (error) {
