@@ -1,25 +1,31 @@
 const mongoose = require("mongoose");
 
-
 const videoSchema = new mongoose.Schema(
-    {
-        title: {
-            String,
-        },
-        description: {
-            String,
-        },
-        filePath: {
-            type: String,
-        },
+  {
+    videoId: {
+      type: String,
     },
-    {
-        timestamps: true,
-    }
-
+    title: {
+      type: String,
+    },
+    description: {
+      type: String,
+    },
+    filePath: {
+      type: String,
+    },
+    videoData: {
+      type: Buffer, // Assuming videoData is binary data (Buffer)
+    },
+    transcript: {
+      type: String, // Assuming transcript is a string
+    },
+  },
+  {
+    timestamps: true,
+  }
 );
 
-
-const Video = mongoose.model('Video', videoSchema);
+const Video = mongoose.model("Video", videoSchema);
 
 module.exports = Video;

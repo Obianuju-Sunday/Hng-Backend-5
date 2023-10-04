@@ -1,12 +1,12 @@
- 
 const Video = require('../model/videoModel');
 require("dotenv").config();
 const { Deepgram } = require("@deepgram/sdk");
 const multer = require('multer');
+const { v4: uuidv4 } = require('uuid'); // Import the uuid package
 
 const deepgram = new Deepgram('5f596cc5c3b3387697b7d954bb0873f65d6f21bb');
 
-const storage = multer.memoryStorage(); 
+const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
 const videoChunks = [];
@@ -14,7 +14,10 @@ const videoChunks = [];
 const uploadVideo = async (req, res) => {
   try {
     const chunk = req.file.buffer;
-    
+
+    // Generate a unique UUID for the video
+    const videoId = uuidv4();
+
     // Append the received chunk to the videoChunks array
     videoChunks.push(chunk);
 
@@ -30,8 +33,9 @@ const uploadVideo = async (req, res) => {
         mimetype: "video/mp4", // Adjust the mimetype as needed
       });
 
-      // Create a new Video document with the full video and transcript
+      // Create a new Video document with the full video, UUID, and transcript
       const file = new Video({
+        videoId: videoId, // Assign the generated UUID to the videoId field
         videoData: fullVideoBuffer,
         transcript: transcript,
       });
@@ -43,13 +47,15 @@ const uploadVideo = async (req, res) => {
       videoChunks.length = 0;
 
       res.status(201).json({ file, transcript });
+
+
     } else {
       // Continue receiving chunks, but don't send a response yet
       res.status(200).json('Video uploaded successfully');
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error});
+    res.status(500).json({ error: error });
   }
 };
 
@@ -73,9 +79,22 @@ const deleteVideo = async (req, res) => {
   }
 };
 
+const getAllVideos = async (req, res) => {
+  try {
+    // Retrieve all videos from your database
+    const videos = await Video.find();
+
+    res.status(200).json({ videos });
+  } catch (error) {
+    res.status(500).json({ error });
+  }
+};
+
+
 module.exports = {
   uploadVideo,
   getSingleVideo,
   deleteVideo,
+  getAllVideos
 };
 
