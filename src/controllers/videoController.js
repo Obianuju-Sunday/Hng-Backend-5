@@ -4,7 +4,9 @@ const { Deepgram } = require("@deepgram/sdk");
 const multer = require('multer');
 const { v4: uuidv4 } = require('uuid'); 
 
-const deepgram = new Deepgram('5f596cc5c3b3387697b7d954bb0873f65d6f21bb');
+const deepgramApiKey = process.env.DEEPGRAM_API_KEY;
+
+const deepgram = new Deepgram(deepgramApiKey);
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
