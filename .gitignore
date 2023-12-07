@@ -1,3 +1,7 @@
+# Ignore node_modules directory (common for Node.js projects)
 node_modules/
+
+# Ignore environment-specific files
 .env
+
 uploads/
