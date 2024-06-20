@@ -28,7 +28,7 @@ app.options('*', cors())
 app.use(express.json());
 
 app.use(
-    '/api', routes);
+    '/api/v1', routes);
 
 //  Swagger UI
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerOptions));
