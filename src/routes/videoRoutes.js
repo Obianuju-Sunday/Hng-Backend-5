@@ -43,7 +43,7 @@ router.delete("/videos/:videoId", deleteVideo)
  *               type: object
  *               properties:
  *                 file:
- *                   $ref: '#/src/uploads'
+ *       
  *                 transcript:
  *                   type: object
  *       500:
@@ -75,7 +75,7 @@ router.delete("/videos/:videoId", deleteVideo)
  *                 videos:
  *                   type: array
  *                   items:
- *                     $ref: '#/src/uploads'
+ *         
  *       500:
  *         description: Internal server error.
  *         content:
@@ -110,7 +110,7 @@ router.delete("/videos/:videoId", deleteVideo)
  *               type: object
  *               properties:
  *                 video:
- *                   $ref: '#/src/uploads'
+ *       
  *       500:
  *         description: Internal server error.
  *         content:
@@ -148,7 +148,7 @@ router.delete("/videos/:videoId", deleteVideo)
  *                   type: string
  *                   description: A success message indicating that the video was deleted.
  *                 video:
- *                   $ref: '#/src/uploads'
+ *       
  *       404:
  *         description: Video not found. The specified video ID does not exist.
  *         content:
