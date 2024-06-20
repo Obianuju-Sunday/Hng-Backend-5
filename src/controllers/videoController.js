@@ -43,9 +43,11 @@ const uploadVideo = async (req, res) => {
       res.status(201).json({ file, transcript });
 
 
-    } else {
-      res.status(200).json('Video uploaded successfully');
     }
+    
+    // else {
+    //   res.status(200).json('Video uploaded successfully');
+    // }
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: error });
