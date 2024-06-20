@@ -15,7 +15,7 @@ router.delete("/videos/:videoId", deleteVideo)
 
 /**
  * @swagger
- * /api/v1/videos:
+ * /api/v1/upload:
  *   post:
  *     summary: Upload a video
  *     description: Uploads a video, transcribes it using Deepgram, and saves it to the database.
@@ -134,7 +134,7 @@ router.delete("/videos/:videoId", deleteVideo)
  *         name: videoId
  *         required: true
  *         schema:
- *           type: string
+ *           type: objectId
  *         description: The ID of the video to be deleted.
  *     responses:
  *       200:
