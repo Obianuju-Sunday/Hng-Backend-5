@@ -8,26 +8,31 @@ mongoose.connect(mongoData);
 const cors = require('cors')
 const database = mongoose.connection;
 const routes = require('./routes/videoRoutes.js');
-
-
-database.on('error' ,(error) => {
-    console.log(error);
-}) 
-
-database.once('connected', () => {
-    console.log('Database Connected'); 
-})
+const swaggerUi = require("swagger-ui-express");
+const swaggerOptions = require("./swagger");
 
 const app = express();
 
+
+database.on('error', (error) => {
+    console.log(error);
+})
+
+database.once('connected', () => {
+    console.log('Database Connected');
+})
+
 app.use(cors())
-app.options('*',cors())
+app.options('*', cors())
 
 app.use(express.json());
- 
+
 app.use(
     '/api', routes);
 
-app.listen(3000, () =>{
+//  Swagger UI
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerOptions));
+
+app.listen(3000, () => {
     console.log(`Server started at ${3000}`)
 })
