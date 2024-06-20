@@ -95,6 +95,8 @@ DEEPGRAM_API_KEY = your_deepgram_api_key
  Link to Postman Published Documentation
 https://documenter.getpostman.com/view/22989155/2s9YeG7sQs
 
+Link to Swagger Documentation https://be-5.onrender.com/api-docs
+
 
 # 📜 License
 This software is open source, licensed under the [MIT License](https://github.com/Obianuju-Sunday/Hng-Backend-5/blob/main/LICENSE).
