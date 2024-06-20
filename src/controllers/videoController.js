@@ -2,19 +2,22 @@ const Video = require('../model/videoModel');
 require("dotenv").config();
 const { Deepgram } = require("@deepgram/sdk");
 const multer = require('multer');
-const { v4: uuidv4 } = require('uuid'); 
+const { v4: uuidv4 } = require('uuid');
 
-const deepgramApiKey = process.env.DEEPGRAM_API_KEY;
 
-const deepgram = new Deepgram(deepgramApiKey);
-
-const storage = multer.memoryStorage();
-const upload = multer({ storage });
-
-const videoChunks = [];
-
-const uploadVideo = async (req, res) => {
+const uploadVideo = async (req, res) => {  
   try {
+
+
+
+    const deepgramApiKey = process.env.DEEPGRAM_API_KEY;
+    const deepgram = new Deepgram(deepgramApiKey);
+
+    const storage = multer.memoryStorage();
+    const upload = multer({ storage });
+
+    const videoChunks = [];
+
     const chunk = req.file.buffer;
 
     const videoId = uuidv4();
@@ -27,11 +30,11 @@ const uploadVideo = async (req, res) => {
       const fullVideoBuffer = Buffer.concat(videoChunks);
 
       const transcript = await deepgram.transcribe(fullVideoBuffer, {
-        mimetype: "video/mp4", 
+        mimetype: "video/mp4",
       });
 
       const file = new Video({
-        videoId: videoId, 
+        videoId: videoId,
         videoData: fullVideoBuffer,
         transcript: transcript,
       });
@@ -44,7 +47,7 @@ const uploadVideo = async (req, res) => {
 
 
     }
-    
+
     // else {
     //   res.status(200).json('Video uploaded successfully');
     // }
@@ -62,17 +65,19 @@ const getSingleVideo = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error });
   }
-};
+}; 
 
 const deleteVideo = async (req, res) => {
   try {
     const { videoId } = req.params;
     const video = await Video.findByIdAndDelete(videoId);
-    res.status(200).json({ video });
+    res.status(200).json({ message: "Video deleted successfully", video });
   } catch (error) {
-    res.status(500).json({ error });
+    console.error(error); 
+    res.status(500).json({ error: "An error occurred while deleting the video" });  
   }
 };
+
 
 const getAllVideos = async (req, res) => {
   try {

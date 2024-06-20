@@ -3,7 +3,7 @@ require('dotenv').config()
 
 const express = require('express');
 const mongoose = require('mongoose');
-const mongoData = process.env.DATABASE_URL;
+const mongoData = process.env.DATABASE_URL; 
 mongoose.connect(mongoData);
 const cors = require('cors')
 const database = mongoose.connection;
