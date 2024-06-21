@@ -50,8 +50,6 @@ const uploadVideo = async (req, res) => {
 
     const file = new Video({
       videoId: videoId,
-      title: title,
-      description: description,
       cloudinaryUrl: cloudinaryUrl,
       transcript: transcript.results,
     });

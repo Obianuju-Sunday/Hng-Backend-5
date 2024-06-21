@@ -47,18 +47,9 @@ router.delete("/videos/:videoId", deleteVideo)
 *                 videoId:
 *                   type: string
 *                   description: The unique identifier of the video.
-*                 title:
+*                 cloudinaryUrl:
 *                   type: string
-*                   description: The title of the video.
-*                 description:
-*                   type: string
-*                   description: The description of the video.
-*                 filePath:
-*                   type: string
-*                   description: The URL or path to the uploaded video.
-*                 videoData:
-*                   type: string
-*                   description: The video data in buffer format.
+*                   description: The URL of the video uploaded to Cloudinary.
 *                 transcript:
 *                   type: object
 *                   description: The transcription of the video.
@@ -83,6 +74,7 @@ router.delete("/videos/:videoId", deleteVideo)
 *                   type: string
 *                   description: Error message describing the internal server error.
 */
+
 
 
 

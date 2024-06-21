@@ -5,12 +5,6 @@ const videoSchema = new mongoose.Schema(
     videoId: {
       type: String,
     },
-    title: {
-      type: String,
-    },
-    description: {
-      type: String,
-    },
     videoData: {
       type: Buffer,
     },
