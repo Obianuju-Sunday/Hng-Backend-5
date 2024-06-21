@@ -1,15 +1,8 @@
 
 const express = require('express');
-const multer = require('multer');
 const { uploadVideo, deleteVideo, getSingleVideo, getAllVideos , upload } = require("../controllers/videoController");
 
 const router = express.Router();
-
-router.post("/upload", upload.single('video'), uploadVideo);
-router.get("/videos/:videoId", getSingleVideo);
-router.get("/videos", getAllVideos);
-router.delete("/videos/:videoId", deleteVideo)
-
 
 /** @swagger
 * /api/v1/upload:
@@ -59,11 +52,8 @@ router.delete("/videos/:videoId", deleteVideo)
 *                   type: string
 *                   description: Error message describing the internal server error.
 */
+router.post("/upload", upload.single('video'), uploadVideo);
 
-
-
-
-// 6675c9cc227677e9d9017f08"
 
 /**
  * @swagger
@@ -94,6 +84,8 @@ router.delete("/videos/:videoId", deleteVideo)
  *                 error:
  *                   type: string
  */
+router.get("/videos", getAllVideos);
+
 
 /**
  * @swagger
@@ -139,6 +131,8 @@ router.delete("/videos/:videoId", deleteVideo)
  *                 error:
  *                   type: string
  */
+router.get("/videos/:videoId", getSingleVideo);
+
 
 /**
  * @swagger
@@ -187,6 +181,8 @@ router.delete("/videos/:videoId", deleteVideo)
  *                 error:
  *                   type: string
  */
+router.delete("/videos/:videoId", deleteVideo)
+
 
 
 module.exports = router;
