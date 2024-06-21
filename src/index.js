@@ -10,6 +10,9 @@ const database = mongoose.connection;
 const routes = require('./routes/videoRoutes.js');
 const swaggerUi = require("swagger-ui-express");
 const swaggerOptions = require("./swagger");
+// const multer = require('multer')
+const bodyParser = require("body-parser");
+
 
 const app = express();
 
@@ -21,6 +24,10 @@ database.on('error', (error) => {
 database.once('connected', () => {
     console.log('Database Connected');
 })
+
+// Increase the request payload size limit to a larger value (e.g., 50MB)
+app.use(bodyParser.json({ limit: "50mb" }));
+app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 
 app.use(cors())
 app.options('*', cors())

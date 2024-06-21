@@ -1,11 +1,11 @@
 
 const express = require('express');
 const multer = require('multer');
-const { uploadVideo, deleteVideo, getSingleVideo, getAllVideos } = require("../controllers/videoController");
+const { uploadVideo, deleteVideo, getSingleVideo, getAllVideos , upload } = require("../controllers/videoController");
 
 const router = express.Router();
 
-const upload = multer({ dest: 'uploads/' });
+// const uploadVideos = multer({ dest: 'uploads/' });
 
 router.post("/upload", upload.single('video'), uploadVideo);
 router.get("/videos/:videoId", getSingleVideo);
@@ -13,27 +13,19 @@ router.get("/videos", getAllVideos);
 router.delete("/videos/:videoId", deleteVideo)
 
 
-/**
- * @swagger
- * /api/v1/upload:
- *   post:
- *     summary: Upload a video
- *     description: Uploads a video, transcribes it using Deepgram, and saves it to the database.
- *     tags: [videos]
- *     requestBody:
- *       required: true
- *       content:
- *         multipart/form-data:
- *           schema:
- *             type: object
- *             properties:
- *               file:
- *                 type: string
- *                 format: binary
- *                 description: The video file to upload.
- *               isLastChunk:
- *                 type: string
- *                 description: Indicator if this is the last chunk of the video.
+/** @swagger
+* /api/v1/upload:
+*   post:
+*     summary: Upload a video
+*     consumes:
+*       - multipart/form-data
+*     parameters:
+*       - in: formData
+*         type: file
+*         required: true
+*       - in: body
+*         name: video 
+*         description: The video file to upload.
  *     responses:
  *       201:
  *         description: Video uploaded and transcribed successfully.
@@ -42,8 +34,6 @@ router.delete("/videos/:videoId", deleteVideo)
  *             schema:
  *               type: object
  *               properties:
- *                 file:
- *       
  *                 transcript:
  *                   type: object
  *       500:
@@ -56,6 +46,9 @@ router.delete("/videos/:videoId", deleteVideo)
  *                 error:
  *                   type: string
  */
+
+
+
 
 /**
  * @swagger

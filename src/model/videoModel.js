@@ -15,10 +15,10 @@ const videoSchema = new mongoose.Schema(
       type: String,
     },
     videoData: {
-      type: Buffer, // Assuming videoData is binary data (Buffer)
+      type: Buffer,
     },
     transcript: {
-      type: String, // Assuming transcript is a string
+      type: Object,
     },
   },
   {

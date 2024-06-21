@@ -6,7 +6,7 @@ const options = {
     info: {
       title: "Help Me Out End Point Documentation",
       version: "1.0.0",
-      description: "API for Help Me Out End Point Documentation",
+      description: "Help Me Out End Point Documentation - A chrome extension",
     },
   },
   apis: ["./src/routes/*.js"],
