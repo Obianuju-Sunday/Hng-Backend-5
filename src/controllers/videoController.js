@@ -76,6 +76,10 @@ const getSingleVideo = async (req, res) => {
   try {
     const { videoId } = req.params;
     const video = await Video.findById(videoId);
+
+    if (!video) {
+      return res.status(404).json({ message: 'Video not found in the database' });
+    }
     res.status(200).json({ video });
   } catch (error) {
     res.status(500).json({ error });
