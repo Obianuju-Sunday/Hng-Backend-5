@@ -15,7 +15,7 @@
 - [License](#license)
 
 # Overview
-This project allows users to upload videos and obtain transcriptions using Deepgram's transcription service. The application provides an API endpoint for uploading videos, processing them, and retrieving transcriptions.
+This project allows users to upload videos and obtain transcriptions using Deepgram's transcription service. The application provides an API endpoint for uploading videos, processing them, storing them in Cloudinary, and retrieving transcriptions. The system utilizes MongoDB for storing metadata and transcription results.
 
 # 🚀 Getting Started
 
@@ -62,6 +62,9 @@ Create a `.env` file based on `.env.example` and fill in necessary values.
 PORT = 3000
 DATABASE_URL = your_mongodb_connection_url
 DEEPGRAM_API_KEY = your_deepgram_api_key
+CLOUDINARY_CLOUD_NAME = your_cloudinary_cloud_name
+CLOUDINARY_API_KEY = your_cloudinary_api_key
+CLOUDINARY_API_SECRET = your_cloudinary_api_secret
 
 ```
 
@@ -79,6 +82,10 @@ DEEPGRAM_API_KEY = your_deepgram_api_key
 * [Deepgram SDK](https://www.deepgram.com/) is a software development kit that allows integration with Deepgram's transcription service. It provides functionalities to transcribe audio and video files.
 
 * [Multer](https://www.npmjs.com/package/multer) is a middleware for handling multipart/form-data used for file uploads in Node.js. 
+
+* [Cloudinary](https://cloudinary.com/) A cloud-based service that provides secure storage for the uploaded video files.
+
+* [dotenv](https://www.npmjs.com/package/dotenv) A module to load environment variables from a .env file.
 
 
 # ⭐ Contributing
