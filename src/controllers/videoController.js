@@ -56,7 +56,7 @@ const uploadVideo = async (req, res) => {
 
     await file.save();
 
-    res.status(201).json( 'Video uploaded and transcribed successfully', file );
+    res.status(201).json( {file} );
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: error.message });
@@ -78,6 +78,11 @@ const getSingleVideo = async (req, res) => {
   try {
     const { videoId } = req.params;
     const video = await Video.findById(videoId);
+
+
+    if (!videoId) {
+      return res.status(400).json({ message: 'Please provide a valid videoId' });
+    }
 
     if (!video) {
       return res.status(404).json({ message: 'Video not found in the database' });

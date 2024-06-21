@@ -15,30 +15,18 @@ router.delete("/videos/:videoId", deleteVideo)
 * /api/v1/upload:
 *   post:
 *     summary: Upload a video and obtain transcription
+*     tags: [videos]
 *     consumes:
 *       - multipart/form-data
 *     parameters:
 *       - in: formData
-*         name: file
+*         name: video
 *         type: file
 *         required: true
 *         description: The video file to upload.
-*       - in: body
-*         name: video
-*         description: Video details.
-*         required: false
-*         schema:
-*           type: object
-*           properties:
-*             title:
-*               type: string
-*               description: The title of the video.
-*             description:
-*               type: string
-*               description: The description of the video.
 *     responses:
 *       201:
-*         description: Video uploaded and transcribed successfully.
+*         description: Video is uploaded and transcribed successfully. Returns video details and transcripts
 *         content:
 *           application/json:
 *             schema:
@@ -47,14 +35,11 @@ router.delete("/videos/:videoId", deleteVideo)
 *                 videoId:
 *                   type: string
 *                   description: The unique identifier of the video.
-*                 cloudinaryUrl:
-*                   type: string
-*                   description: The URL of the video uploaded to Cloudinary.
 *                 transcript:
 *                   type: object
 *                   description: The transcription of the video.
 *       400:
-*         description: Bad request - no file uploaded.
+*         description: Bad request - no file uploaded. You may also receive an error like 'Required field is not provided'
 *         content:
 *           application/json:
 *             schema:
@@ -78,6 +63,7 @@ router.delete("/videos/:videoId", deleteVideo)
 
 
 
+// 6675c9cc227677e9d9017f08"
 
 /**
  * @swagger
@@ -125,14 +111,24 @@ router.delete("/videos/:videoId", deleteVideo)
  *         description: The ID of the video to retrieve.
  *     responses:
  *       200:
- *         description: Video retrieved successfully.
+ *         description: Video retrieved successfully. Returns details of the videoId.
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
  *                 video:
- *       
+ * 
+ *       404:
+ *          description: Video not found. The specified video ID does not exist in the db.
+ *          content:
+ *            application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: Error message indicating that the video was not found.
  *       500:
  *         description: Internal server error.
  *         content:
@@ -160,7 +156,7 @@ router.delete("/videos/:videoId", deleteVideo)
  *         description: The ID of the video to be deleted.
  *     responses:
  *       200:
- *         description: Video deleted successfully. This also returns the details of the deleted video.
+ *         description: Video deleted successfully.
  *         content:
  *           application/json:
  *             schema:
@@ -172,7 +168,7 @@ router.delete("/videos/:videoId", deleteVideo)
  *                 video:
  *       
  *       404:
- *         description: Video not found. The specified video ID does not exist.
+ *         description: Video not found. The specified video ID does not exist in the db.
  *         content:
  *           application/json:
  *             schema:
