@@ -11,9 +11,6 @@ const videoSchema = new mongoose.Schema(
     description: {
       type: String,
     },
-    filePath: {
-      type: String,
-    },
     videoData: {
       type: Buffer,
     },

@@ -5,8 +5,6 @@ const { uploadVideo, deleteVideo, getSingleVideo, getAllVideos , upload } = requ
 
 const router = express.Router();
 
-// const uploadVideos = multer({ dest: 'uploads/' });
-
 router.post("/upload", upload.single('video'), uploadVideo);
 router.get("/videos/:videoId", getSingleVideo);
 router.get("/videos", getAllVideos);
@@ -16,36 +14,75 @@ router.delete("/videos/:videoId", deleteVideo)
 /** @swagger
 * /api/v1/upload:
 *   post:
-*     summary: Upload a video
+*     summary: Upload a video and obtain transcription
 *     consumes:
 *       - multipart/form-data
 *     parameters:
 *       - in: formData
+*         name: file
 *         type: file
 *         required: true
-*       - in: body
-*         name: video 
 *         description: The video file to upload.
- *     responses:
- *       201:
- *         description: Video uploaded and transcribed successfully.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 transcript:
- *                   type: object
- *       500:
- *         description: Internal server error.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 error:
- *                   type: string
- */
+*       - in: body
+*         name: video
+*         description: Video details.
+*         required: false
+*         schema:
+*           type: object
+*           properties:
+*             title:
+*               type: string
+*               description: The title of the video.
+*             description:
+*               type: string
+*               description: The description of the video.
+*     responses:
+*       201:
+*         description: Video uploaded and transcribed successfully.
+*         content:
+*           application/json:
+*             schema:
+*               type: object
+*               properties:
+*                 videoId:
+*                   type: string
+*                   description: The unique identifier of the video.
+*                 title:
+*                   type: string
+*                   description: The title of the video.
+*                 description:
+*                   type: string
+*                   description: The description of the video.
+*                 filePath:
+*                   type: string
+*                   description: The URL or path to the uploaded video.
+*                 videoData:
+*                   type: string
+*                   description: The video data in buffer format.
+*                 transcript:
+*                   type: object
+*                   description: The transcription of the video.
+*       400:
+*         description: Bad request - no file uploaded.
+*         content:
+*           application/json:
+*             schema:
+*               type: object
+*               properties:
+*                 error:
+*                   type: string
+*                   description: Error message indicating no file was uploaded.
+*       500:
+*         description: Internal server error.
+*         content:
+*           application/json:
+*             schema:
+*               type: object
+*               properties:
+*                 error:
+*                   type: string
+*                   description: Error message describing the internal server error.
+*/
 
 
 

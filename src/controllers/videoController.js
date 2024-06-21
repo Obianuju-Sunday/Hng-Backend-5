@@ -38,6 +38,8 @@ const uploadVideo = async (req, res) => {
       }
     ).end(req.file.buffer);
 
+
+    const { title , description } = req.body;
     const cloudinaryUrl = result.secure_url;
     const videoBuffer = req.file.buffer;
     const videoId = uuidv4();
@@ -48,13 +50,15 @@ const uploadVideo = async (req, res) => {
 
     const file = new Video({
       videoId: videoId,
+      title: title,
+      description: description,
       cloudinaryUrl: cloudinaryUrl,
       transcript: transcript.results,
     });
 
     await file.save();
 
-    res.status(201).json({ file });
+    res.status(201).json( 'Video uploaded and transcribed successfully', file );
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: error.message });
