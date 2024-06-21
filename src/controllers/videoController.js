@@ -85,12 +85,21 @@ const getSingleVideo = async (req, res) => {
 const deleteVideo = async (req, res) => {
   try {
     const { videoId } = req.params;
-    const video = await Video.findByIdAndDelete(videoId);
-    res.status(200).json({ video });
+
+    const video = await Video.findById(videoId);
+
+    if (!video) {
+      return res.status(404).json({ message: 'Video not found in the database' });
+    }
+
+    await Video.findByIdAndDelete(videoId);
+    res.status(200).json({ message: 'Video deleted successfully' });
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error });
   }
 };
+
 
 module.exports = {
   upload,
