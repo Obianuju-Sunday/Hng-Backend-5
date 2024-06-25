@@ -40,6 +40,6 @@ app.use(
 //  Swagger UI
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerOptions));
 
-app.listen(3000, () => {
-    console.log(`Server started at ${3000}`)
+app.listen(4000, () => {
+    console.log(`Server started at ${4000}`)
 })
