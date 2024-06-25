@@ -4,7 +4,6 @@ const multer = require('multer');
 const Video = require('../model/videoModel');
 const cloudinary = require("cloudinary").v2;
 const { Deepgram } = require("@deepgram/sdk");
-const { v4: uuidv4 } = require('uuid');
 
 
 cloudinary.config({
@@ -32,26 +31,33 @@ const uploadVideo = async (req, res) => {
       { resource_type: 'video' },
       (error, result) => {
         if (error) {
+          console.log(error);
           throw error;
         }
         return result;
       }
     ).end(req.file.buffer);
 
+    const cloudinaryUrl = cloudinary.url;
 
-    const { title , description } = req.body;
-    const cloudinaryUrl = result.secure_url;
+    console.log('cloudinaryUrl:', cloudinaryUrl);
+
     const videoBuffer = req.file.buffer;
-    const videoId = uuidv4();
+    let videoDuration = null;
 
     const transcript = await deepgram.transcription.preRecorded(
       { buffer: videoBuffer, mimetype: "video/mp4" }
     );
 
+    if (result.duration) { 
+      videoDuration = result.duration;
+    } 
+
+
     const file = new Video({
-      videoId: videoId,
-      cloudinaryUrl: cloudinaryUrl,
-      transcript: transcript.results,
+      videoDuration,
+      cloudinaryUrl,
+      transcript: transcript.results.channels[0].alternatives[0].transcript,
     });
 
     await file.save();
