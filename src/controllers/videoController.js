@@ -38,24 +38,15 @@ const uploadVideo = async (req, res) => {
       }
     ).end(req.file.buffer);
 
-    const cloudinaryUrl = cloudinary.url;
-
-    console.log('cloudinaryUrl:', cloudinaryUrl);
+    const cloudinaryUrl = result.secure_url;
 
     const videoBuffer = req.file.buffer;
-    let videoDuration = null;
 
     const transcript = await deepgram.transcription.preRecorded(
       { buffer: videoBuffer, mimetype: "video/mp4" }
     );
 
-    if (result.duration) { 
-      videoDuration = result.duration;
-    } 
-
-
     const file = new Video({
-      videoDuration,
       cloudinaryUrl,
       transcript: transcript.results.channels[0].alternatives[0].transcript,
     });
@@ -73,6 +64,9 @@ const uploadVideo = async (req, res) => {
 const getAllVideos = async (req, res) => {
   try {
     const videos = await Video.find();
+    if(!videos.length){
+      return res.status(200).json('No video found in the database');
+    }
     res.status(200).json({ videos });
   } catch (error) {
     res.status(500).json({ error });

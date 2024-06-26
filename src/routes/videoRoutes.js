@@ -1,6 +1,6 @@
 
 const express = require('express');
-const { uploadVideo, deleteVideo, getSingleVideo, getAllVideos , upload } = require("../controllers/videoController");
+const { uploadVideo, deleteVideo, getSingleVideo, getAllVideos, upload } = require("../controllers/videoController");
 
 const router = express.Router();
 
@@ -16,7 +16,7 @@ const router = express.Router();
 *         name: video
 *         type: file
 *         required: true
-*         description: The video file to upload.
+*     description: The video file to upload. Maximum file size is 3MB.
 *     responses:
 *       201:
 *         description: Video is uploaded and transcribed successfully. Returns video details and transcripts
@@ -32,7 +32,7 @@ const router = express.Router();
 *                   type: object
 *                   description: The transcription of the video.
 *       400:
-*         description: Bad request - no file uploaded. You may also receive an error like 'Required field is not provided'
+*         description: Bad request - no file uploaded or file size exceeds 3MB. You may also receive an error like 'Required field is not provided'
 *         content:
 *           application/json:
 *             schema:
@@ -64,7 +64,7 @@ router.post("/upload", upload.single('video'), uploadVideo);
  *     tags: [videos]
  *     responses:
  *       200:
- *         description: Videos retrieved successfully.
+ *         description: Videos retrieved successfully. OR No video found.
  *         content:
  *           application/json:
  *             schema:
