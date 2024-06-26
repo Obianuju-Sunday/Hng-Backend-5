@@ -5,9 +5,6 @@ const videoSchema = new mongoose.Schema(
     videoId: {
       type: String,
     },
-    duration: {
-      type: Number,
-    },
     videoUrl: {
       type: String,
     },
