@@ -27,7 +27,7 @@ const uploadVideo = async (req, res) => {
       return res.status(400).json({ error: 'No file uploaded' });
     }
 
-    const result = cloudinary.uploader.upload_stream( 'video.mp4',
+    const result = cloudinary.uploader.upload_stream(
       { resource_type: 'video' },
       (error, result) => {
         if (error) {
