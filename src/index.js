@@ -3,7 +3,7 @@ require('dotenv').config()
 
 const express = require('express');
 const mongoose = require('mongoose');
-const mongoData = process.env.DATABASE_URL; 
+const mongoData = process.env.DATABASE_URL;
 mongoose.connect(mongoData);
 const cors = require('cors')
 const database = mongoose.connection;
@@ -31,6 +31,14 @@ app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 
 app.use(cors())
 app.options('*', cors())
+
+//Allow all requests from all domains & localhost
+app.all('/*', function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Allow-Methods", "POST, GET, DELETE");
+});
+
 
 app.use(express.json());
 
